@@ -17,6 +17,9 @@
 class Webhook < ApplicationRecord
   ENABLED = { github: 0 }.freeze
 
+  #== ASSOCIATIONS =========================================
+  has_many :events, dependent: :destroy
+
   #== ACCEPTED ATTRIBUTES ==================================
   enum integration: ENABLED, _prefix: true
 end
