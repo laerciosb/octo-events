@@ -7,3 +7,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+webhook = Webhook.find_or_create_by!(integration: :github)
+issue = Issue.find_or_create_by!(number: 1)
+Event.find_or_create_by!(triggerable: issue, webhook:, action: 'push')

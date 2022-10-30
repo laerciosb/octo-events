@@ -15,6 +15,10 @@ RSpec.describe Webhook, type: :model do
     include_examples 'timestamps columns'
   end
 
+  context 'with associations' do
+    it { is_expected.to have_many(:events).dependent(:destroy) }
+  end
+
   context 'with accepted attributes' do
     it { is_expected.to define_enum_for(:integration).with_values(github: 0).with_prefix(true) }
   end
