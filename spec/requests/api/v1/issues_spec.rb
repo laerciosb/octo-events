@@ -19,5 +19,11 @@ RSpec.describe '/issues', type: :request do
 
       expect(response).to have_http_status(:not_found)
     end
+
+    it 'renders a unauthorized response' do
+      get events_v1_issue_url(issue.number), as: :json
+
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 end

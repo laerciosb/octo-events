@@ -6,7 +6,7 @@ module Api::V1
 
     # GET /issues/:number/events
     def events
-      render_jsonapi json: @issue.events, serializer: EventSerializer
+      render_jsonapi json: paginate(@issue.events), serializer: EventSerializer
     end
 
     private

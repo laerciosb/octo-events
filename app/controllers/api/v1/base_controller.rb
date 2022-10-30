@@ -2,6 +2,8 @@
 
 module Api::V1
   class BaseController < ::ApplicationController
+    include Authentication
+    include Pagination
     include Renderization
 
     rescue_from ActiveRecord::RecordNotFound do |e|
