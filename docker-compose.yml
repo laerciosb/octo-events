@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  postgresdb:
+    image: postgres:alpine
+    container_name: postgresdb
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  api:
+    container_name: api
+    build:
+      context: .
+      args:
+        - ENVIRONMENT=development
+        - API_PORT=3000
+    env_file:
+      - ./.env.docker.api
+    links:
+      - postgresdb
+    volumes:
+      - .:/usr/src/api
+      - bundle-data:/usr/src/bundle
+
+  ngrok:
+    image: shkoliar/ngrok:latest
+    container_name: ngrok
+    ports:
+      - 4040:4551
+    links:
+      - api
+    environment:
+      - DOMAIN=api
+      - PORT=3000
+      - DEBUG=true
+      - AUTH_TOKEN=
+
+volumes:
+  postgres-data:
+  bundle-data:

@@ -1,0 +1,17 @@
+pt-BR:
+  activerecord:
+    exceptions:
+      not_found: '%{klass} ID %{id}: não encontrado'
+    errors:
+      models:
+        event:
+          attributes:
+            action:
+              inclusion: '%{value} não está incluído na lista'
+      messages:
+        required: obrigatório
+        taken: já existe
+        record_invalid: 'Erros encontrados: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Não é possível excluir o registro pois existe um %{record} dependente
+          has_many: Não é possível excluir o registro pois existem %{record} dependentes

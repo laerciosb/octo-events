@@ -1,0 +1,69 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@master
+      with:
+        bundler-cache: true
+    - uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+    - name: Run bundle install
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+    - name: Run bundle audit
+      run: |
+        gem install bundler-audit --no-document
+        bundle audit check --update
+    - name: Run rubocop
+      run: |
+        bundle exec rubocop
+    - name: Run brakeman
+      run: |
+        bundle exec brakeman --exit-on-warn --quiet
+    - name: Run fasterer
+      run: |
+        bundle exec fasterer
+    - name: Run rails best practices
+      run: |
+        bundle exec rails_best_practices
+    - name: Run specs
+      env:
+        DBPASS: postgres
+        CI_REPORTS: coverage
+      run: |
+        bundle exec rails db:create db:test:prepare
+        bundle exec rspec --format RspecJunitFormatter --out ./coverage/results.xml
+    - uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage/coverage.xml,./coverage/results.xml
+        verbose: true

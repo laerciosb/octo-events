@@ -1,0 +1,30 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: disable
+  TargetRubyVersion: 3.1.2
+  StyleGuideBaseURL:  https://rubystyle.guide
+  Exclude:
+    - '**/bin/**/*'
+    - '**/db/schema.rb'
+    - '**/vendor/bundle/**/*'
+
+Style/Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - '**/db/**/*'
+
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Max: 10
