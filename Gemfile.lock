@@ -195,7 +195,7 @@ GEM
     parser (3.1.2.1)
       ast (~> 2.4.1)
     path_expander (1.1.1)
-    pg (1.4.4)
+    pg (1.4.5)
     public_suffix (5.0.0)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -351,7 +351,7 @@ DEPENDENCIES
   fasterer
   jsonapi-serializer
   pagy
-  pg (~> 1.1)
+  pg (~> 1.4)
   puma (~> 5.0)
   rack-attack
   rails (~> 7.0.4)
